@@ -6,7 +6,7 @@ import { canExecute, getExecutionContext } from "@/lib/execution-auth";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { estimateId: string } }
+  { params }: { params: Promise<{ estimateId: string }> }
 ) {
   try {
     const context = await getExecutionContext(request);
@@ -35,7 +35,7 @@ export async function GET(
       );
     }
 
-    const estimateId = params.estimateId;
+    const { estimateId } = await params;
     const estimate = await getEstimateById(estimateId);
 
     if (!estimate) {
